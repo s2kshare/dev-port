@@ -29,9 +29,17 @@ export default function Header({
         "4xl": "text-4xl",
         "5xl": "text-5xl",
         "6xl": "text-6xl",
+        "7xl": "text-7xl",
+        "8xl": "text-8xl",
+        "9xl": "text-9xl",
     };
 
-    classNames.push(sizeMap[size] || "text-xl"); // Default to `text-xl` if size is invalid
+    if (sizeMap[size] === undefined) {
+        var temp = "text-[" + size + "]";
+        classNames.push(temp);
+    } else {
+        classNames.push(sizeMap[size]);
+    }
 
     return (
         <motion.h1 className={classNames.join(" ")} {...props}>
