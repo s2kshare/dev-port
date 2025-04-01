@@ -7,6 +7,7 @@ import { GrProjects } from "react-icons/gr";
 import { IoClose } from "react-icons/io5";
 import Header from "./Header";
 import { NavigationLinks } from "../data/NavigationLinks";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
     const [navOpen, toggleNav] = useState(false);
@@ -49,15 +50,18 @@ export default function Navbar() {
     };
 
     return (
-        <motion.div className="h-20 flex items-center justify-center">
+        <motion.div className="h-20 fixed w-full flex items-center justify-center">
             {/* Backdrop */}
             <AnimatePresence>
                 {navOpen && (
                     <motion.div
                         key="overlay"
-                        initial={{ scale: 1, y: "-100%" }}
-                        animate={{ scale: 1, y: 0 }}
-                        exit={{ scale: 1, y: "-100%" }}
+                        // initial={{ scale: 1, y: "-100%" }}
+                        // animate={{ scale: 1, y: 0 }}
+                        // exit={{ scale: 1, y: "-100%" }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 0.75 }}
+                        exit={{ opacity: 0 }}
                         transition={{ duration: 0.3 }}
                         className="fixed top-0 left-0 w-full h-full bg-base-200"
                     />
@@ -68,9 +72,11 @@ export default function Navbar() {
             <motion.div className="fixed mt-8 w-5/6 md:w-1/2 flex gap-2 z-10 py-4 px-4 rounded-xl bg-base-400/20 shadow-lg ring-1 ring-black/5">
                 {/*  */}
                 <div className="nav-left flex-1 flex items-center">
-                    <h1 className="whitespace-nowrap select-none">
-                        dev-portfolio
-                    </h1>
+                    <Link to={"/"}>
+                        <h1 className="whitespace-nowrap select-none">
+                            dev-portfolio
+                        </h1>
+                    </Link>
                 </div>
                 <div className="nav-mid flex-1"></div>
                 <div className="nav-right flex-1 flex items-center justify-end">
@@ -78,13 +84,15 @@ export default function Navbar() {
                         {NavigationLinks.map((link) => {
                             if (link.name === "Home") return null;
                             return (
-                                <Header
-                                    key={link.name}
-                                    className="md:flex hidden"
-                                    size="sm"
-                                >
-                                    {link.name}
-                                </Header>
+                                <Link to={link.path} key={link.name}>
+                                    <Header
+                                        key={link.name}
+                                        className="md:flex hidden"
+                                        size="sm"
+                                    >
+                                        {link.name.toLowerCase()}
+                                    </Header>
+                                </Link>
                             );
                         })}
                         {/* Navigation Toggle Button */}
@@ -113,18 +121,23 @@ export default function Navbar() {
                         initial="initial"
                         animate="animate"
                         exit="exit"
+                        onClick={() => toggleNav(false)}
                     >
                         {/* Staggered Navigation Items */}
                         {NavigationLinks.map((link) => {
-                            if (link.name === "Home") return null;
+                            // if (link.name === "Home") return null;
                             return (
-                                <motion.div
-                                    key={link.name}
-                                    className="mb-5"
-                                    variants={navItemVariants}
-                                >
-                                    <Header size="4xl">{link.name}</Header>
-                                </motion.div>
+                                <Link to={link.path} key={link.name}>
+                                    <motion.div
+                                        key={link.name}
+                                        className="mb-5"
+                                        variants={navItemVariants}
+                                    >
+                                        <Header size="4xl">
+                                            {link.name.toLowerCase()}
+                                        </Header>
+                                    </motion.div>
+                                </Link>
                             );
                         })}
                     </motion.div>
